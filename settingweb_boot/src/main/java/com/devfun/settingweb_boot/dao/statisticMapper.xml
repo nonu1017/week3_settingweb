@@ -11,4 +11,44 @@
         where left(ri.createDate, 2) = #{year};
     </select>
     
+    <select id="selectMonthLogin" parameterType="string" resultType="hashMap">
+    	select count(*) as totCnt
+    	from statistc.requestinfo ri
+    	where left(ri.createDate, 4) = #{month};
+    </select>
+    
+    <select id="selectDayLogin" parameterType="string" resultType="hashMap">
+    	select count(*) as totCnt
+    	from statistc.requestinfo ri
+    	where ri.createDate = #{day};
+    </select>
+    
+    <select id="selectAvgLogin" parameterType="string" resultType="hashMap">
+    	select AVG(totCnt) as avgCnt
+    	from(
+    		select count(ri.createDate) as totCnt
+    		form statistc.requestinfo ri
+    		where ri.createDate between #{sday} and #{eday}
+    		group by ri.createDate
+    		having ri. requestCode = "Login"
+    		)
+    </select>
+    
+    <select id="selectLogin" parameterType="string" resultType="hashMap">
+    	select count(*) as totCnt
+    	from statistc.requestinfo ri
+    	where ri.requestCode = "Login";
+    	group by ri.createDate
+    	having ri.createDate between #{sday} and #{eday}
+    </select>
+    
+    <select id="selectMonthOrg" parameterType="string" resultType="hashMap">
+    	select count(*) as totCnt
+    	from statistc.requestinfo ri, statistc.user usr
+    	where usr.HR_ORGAN = #{Organization};
+    	group by usr.HR_ORGAN
+    	having left(ri.createDate, 4) = #{month}
+    </select>
+    
+    
 </mapper>
